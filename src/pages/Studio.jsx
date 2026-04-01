@@ -1,8 +1,12 @@
 import Navbar from "../components/Navbar";
-import { useEffect } from "react";
-import useEmblaCarousel from "embla-carousel-react";
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
+import { Badge } from "@/components/ui/badge";
 
 export default function Studio() {
+  const [api, setApi] = useState(null);
 
   const images = [
     { src: "/images/9.jpeg", title: "The Alphas", subtitle: "Signature Collection, 2020" },
@@ -10,18 +14,15 @@ export default function Studio() {
     { src: "/images/7.jpg", title: "Midnight Glow", subtitle: "Darkroom Edition" },
   ];
 
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
-
-  
   useEffect(() => {
-    if (!emblaApi) return;
+    if (!api) return;
 
     const interval = setInterval(() => {
-      emblaApi.scrollNext();
-    }, 2500);{/* scroll time */}
+      api.scrollNext();
+    }, 2500);
 
     return () => clearInterval(interval);
-  }, [emblaApi]);
+  }, [api]);
 
   return (
     <div className="min-h-screen relative text-white overflow-hidden">
@@ -47,11 +48,11 @@ export default function Studio() {
         
         <div>
 
-          <span className="text-xs tracking-widest text-cyan-400">
+          <Badge variant="outline" className="text-cyan-400 border-cyan-400/20 bg-cyan-400/10 tracking-widest uppercase text-[10px] py-0 px-2 h-5">
             PREMIUM STUDIO
-          </span>
+          </Badge>
 
-          <h1 className="text-4xl md:text-5xl font-bold mt-2 leading-tight">
+          <h1 className="text-4xl md:text-5xl font-bold mt-4 leading-tight">
             Midnight
             <br />
             Aurora
@@ -66,23 +67,27 @@ export default function Studio() {
           {/* cards */}
           <div className="flex gap-4 mt-6">
 
-            <div className="bg-white/5 border border-white/10 rounded-xl p-4 w-40">
-              <h3 className="text-sm font-semibold mb-1">
-                Celestial Lighting
-              </h3>
-              <p className="text-xs text-white/60">
-                Atmospheric light sculpting.
-              </p>
-            </div>
+            <Card className="bg-white/5 border-white/10 w-40 h-28">
+              <CardHeader className="p-4 gap-1">
+                <CardTitle className="text-sm font-semibold text-white">
+                  Celestial Lighting
+                </CardTitle>
+                <CardDescription className="text-xs text-white/60">
+                  Atmospheric light sculpting.
+                </CardDescription>
+              </CardHeader>
+            </Card>
 
-            <div className="bg-white/5 border border-white/10 rounded-xl p-4 w-40">
-              <h3 className="text-sm font-semibold mb-1">
-                Biometric Curation
-              </h3>
-              <p className="text-xs text-white/60">
-                AI-driven emotional focus.
-              </p>
-            </div>
+            <Card className="bg-white/5 border-white/10 w-40 h-28">
+              <CardHeader className="p-4 gap-1">
+                <CardTitle className="text-sm font-semibold text-white">
+                  Biometric Curation
+                </CardTitle>
+                <CardDescription className="text-xs text-white/60">
+                  AI-driven emotional focus.
+                </CardDescription>
+              </CardHeader>
+            </Card>
 
           </div>
 
@@ -109,22 +114,22 @@ export default function Studio() {
           
           <div className="flex gap-4 mt-8">
 
-             <button className="px-5 py-2 rounded-full bg-white text-black font-medium 
+             <Button className="px-4 py-5 rounded-full bg-white text-black font-medium 
                 transition-all duration-300 
                 hover:scale-105 hover:shadow-[0_0_20px_rgba(255,255,255,0.4)] 
                 hover:bg-gray-200">
                     Book Consultation
-            </button>
+            </Button>
 
 
-            <button className="px-5 py-2 rounded-full 
+            <Button className="px-6 py-5 rounded-full 
             bg-gradient-to-r from-cyan-400 to-purple-500 text-black font-medium 
             transition-all duration-300 
             hover:scale-105 
             hover:shadow-[0_0_25px_rgba(34,211,238,0.6)] 
             hover:brightness-110">
              Visit our shop
-            </button>
+            </Button>
 
           </div>
 
@@ -133,16 +138,16 @@ export default function Studio() {
         {/* carousel */}
         <div className="relative">
 
-          <div className="overflow-hidden" ref={emblaRef}>
-            <div className="flex">
-
+          <Carousel setApi={setApi} opts={{ loop: true }} className="w-full">
+            <CarouselContent>
               {images.map((img, index) => (
-                <div className="min-w-full px-1" key={index}>
-                  <div className="relative rounded-3xl overflow-hidden shadow-2xl">
+                <CarouselItem key={index}>
+                  <div className="relative rounded-3xl overflow-hidden shadow-2xl mx-1">
 
                     <img
                       src={img.src}
                       className="w-full h-[500px] object-cover"
+                      alt={img.title}
                     />
 
                     {/* labels */}
@@ -159,11 +164,10 @@ export default function Studio() {
                     </div>
 
                   </div>
-                </div>
+                </CarouselItem>
               ))}
-
-            </div>
-          </div>
+            </CarouselContent>
+          </Carousel>
 
         </div>
 
